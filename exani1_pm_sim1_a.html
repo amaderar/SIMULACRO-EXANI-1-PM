@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Simulacro EXANI-I — Pensamiento Matemático A — Aritmética, Álgebra y Geometría — Asesorías Académicas Izamal</title>
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--azul:#0033cc;--azul-dark:#002299;--azul-light:#e8eeff;--naranja:#ff4500;--naranja-mid:#ff8c00;--bg:#f0f4ff;--card:#fff;--txt:#1a1a2e;--sub:#5a6080;--rad:14px;--shadow:0 6px 24px rgba(0,51,204,.13);}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 0 30px;}
+.hero{width:100%;background:linear-gradient(135deg,#0033cc 0%,#0011aa 60%,#001188 100%);padding:24px 20px 18px;display:flex;flex-direction:column;align-items:center;margin-bottom:18px;box-shadow:0 4px 20px rgba(0,0,0,.25);}
+.hero-inner{max-width:760px;width:100%;display:flex;align-items:center;gap:16px;}
+.hero-logo{width:76px;height:76px;flex-shrink:0;background:#fff;border-radius:50%;padding:5px;box-shadow:0 4px 14px rgba(0,0,0,.3);}
+.hero-logo img{width:100%;height:100%;object-fit:contain;border-radius:50%;}
+.hero-title{font-size:1.15rem;font-weight:800;color:#fff;line-height:1.2;}
+.hero-title span{color:#ff8c00}
+.hero-subtitle{font-size:.76rem;color:rgba(255,255,255,.8);margin-top:4px;line-height:1.5;}
+.hero-badge{display:inline-block;background:rgba(255,140,0,.25);border:1px solid rgba(255,140,0,.5);border-radius:20px;padding:3px 12px;font-size:.68rem;color:#ffd080;font-weight:700;margin-top:6px;}
+.hero-stripe{width:100%;height:4px;background:linear-gradient(90deg,#ff4500,#ff8c00,#ff4500);margin-top:16px;border-radius:3px;opacity:.7;}
+.wrap{width:100%;max-width:760px;padding:0 12px;}
+.card{background:var(--card);border-radius:var(--rad);box-shadow:var(--shadow);padding:22px 20px;margin-bottom:14px;}
+#screen-home h2{font-size:1.2rem;text-align:center;margin-bottom:6px;color:var(--azul);font-weight:800;}
+.home-sub{text-align:center;color:var(--sub);margin-bottom:18px;font-size:.84rem;line-height:1.6;}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.info-card{background:var(--azul-light);border-radius:12px;padding:13px 8px;text-align:center;border:2px solid #c0d0f0;}
+.info-card .val{font-size:1.3rem;font-weight:800;color:var(--azul);}
+.info-card .lbl{font-size:.7rem;color:var(--sub);margin-top:3px;font-weight:600;}
+.btn-primary{width:100%;border:none;border-radius:12px;padding:14px;cursor:pointer;font-size:.97rem;font-weight:800;background:linear-gradient(135deg,var(--naranja),var(--naranja-mid));color:#fff;box-shadow:0 4px 14px rgba(255,69,0,.35);transition:opacity .2s,transform .1s;}
+.btn-primary:hover{opacity:.92;}.btn-primary:active{transform:scale(.98);}
+#screen-exam{padding:0;}
+.exam-header{padding:14px 20px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.lectura-pill{font-size:.76rem;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--azul),var(--azul-dark));padding:5px 13px;border-radius:20px;max-width:65%;line-height:1.3;}
+.timer-box{font-size:1rem;font-weight:800;padding:5px 13px;border-radius:20px;background:var(--azul-light);color:var(--azul);min-width:72px;text-align:center;border:2px solid #c0d0f0;flex-shrink:0;transition:all .3s;}
+.timer-box.warn{background:#fff3e8;color:#cc5500;border-color:#ffb080;}
+.timer-box.danger{background:#fff0f0;color:#cc0000;border-color:#ffb0b0;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.progress-wrap{margin:0 20px 6px;height:6px;background:#e0e8ff;border-radius:3px;overflow:hidden;}
+.progress-bar{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--naranja),var(--naranja-mid));transition:width .35s;}
+.nav-section{padding:8px 20px 12px;border-bottom:2px solid var(--azul-light);}
+.nav-label{font-size:.69rem;color:var(--sub);margin-bottom:6px;font-weight:700;letter-spacing:.3px;}
+.nav-grid{display:flex;flex-wrap:wrap;gap:5px;}
+.nav-sep{width:100%;font-size:.67rem;color:var(--sub);font-weight:700;margin:5px 0 3px;letter-spacing:.3px;}
+.nav-btn{width:30px;height:30px;border-radius:7px;border:2px solid #d0d8f0;background:#fff;font-size:.78rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;color:var(--txt);flex-shrink:0;}
+.nav-btn:hover{border-color:var(--azul);background:var(--azul-light);}
+.nav-btn.answered{background:var(--azul);border-color:var(--azul);color:#fff;}
+.nav-btn.wrong-nav{background:var(--naranja);border-color:var(--naranja);color:#fff;}
+.nav-btn.current{border-width:3px;transform:scale(1.1);}
+.exam-body{padding:14px 20px 20px;}
+.lectura-header{font-size:.88rem;font-weight:800;color:var(--azul);margin-bottom:12px;padding:8px 12px;background:var(--azul-light);border-radius:9px;border-left:4px solid var(--azul);}
+.lectura-texto{font-size:.87rem;line-height:1.8;color:var(--txt);margin-bottom:18px;padding:14px 16px;background:#fafbff;border:1px solid #d8e0f0;border-radius:10px;max-height:260px;overflow-y:auto;}
+.lectura-texto p{margin-bottom:10px;}.lectura-texto p:last-child{margin-bottom:0;}
+.q-num{font-size:.72rem;color:var(--sub);margin-bottom:6px;font-weight:700;letter-spacing:.3px;}
+.q-text{font-size:.94rem;line-height:1.7;margin-bottom:14px;font-weight:500;}
+.options{display:flex;flex-direction:column;gap:9px;}
+.opt-btn{border:2px solid #d0d8f0;border-radius:10px;background:#fff;padding:11px 14px;text-align:left;cursor:pointer;font-size:.88rem;line-height:1.5;transition:border-color .18s,background .18s;display:flex;align-items:flex-start;gap:10px;width:100%;}
+.opt-btn:hover:not(:disabled){border-color:var(--azul);background:var(--azul-light);}
+.opt-letter{min-width:26px;height:26px;border-radius:50%;background:#e8eeff;font-weight:800;font-size:.79rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;color:var(--azul);}
+.opt-btn.correct{border-color:#27ae60;background:#eafaf1;}.opt-btn.correct .opt-letter{background:#27ae60;color:#fff;}
+.opt-btn.wrong{border-color:var(--naranja);background:#fff3f0;}.opt-btn.wrong .opt-letter{background:var(--naranja);color:#fff;}
+.opt-btn:disabled{cursor:default;}
+.explanation{display:none;margin-top:11px;background:#f8f9fe;border-left:4px solid #27ae60;padding:9px 13px;border-radius:0 8px 8px 0;font-size:.83rem;line-height:1.65;color:var(--txt);}
+.explanation.show{display:block;}.explanation.fail{border-left-color:var(--naranja);}
+.exam-footer{padding:0 20px 18px;display:flex;gap:8px;align-items:center;margin-top:12px;}
+.btn-nav{flex:1;padding:10px 5px;border-radius:10px;border:2px solid #d0d8f0;background:#fff;font-size:.85rem;font-weight:700;cursor:pointer;color:var(--txt);transition:all .18s;}
+.btn-nav:hover{border-color:var(--azul);background:var(--azul-light);}.btn-nav:disabled{opacity:.35;cursor:default;}
+.btn-entregar{padding:10px 15px;border-radius:10px;border:none;font-size:.85rem;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--naranja),var(--naranja-mid));white-space:nowrap;box-shadow:0 3px 10px rgba(255,69,0,.3);}
+#screen-timeout{text-align:center;}
+#screen-timeout h2{font-size:1.2rem;margin-bottom:10px;color:var(--naranja);}
+#screen-timeout p{color:var(--sub);margin-bottom:20px;line-height:1.6;}
+#screen-results h2{text-align:center;font-size:1.2rem;margin-bottom:14px;color:var(--azul);font-weight:800;}
+.result-summary{background:linear-gradient(135deg,var(--azul),var(--azul-dark));border-radius:14px;padding:20px;text-align:center;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,51,204,.25);}
+.result-score{font-size:2.5rem;font-weight:800;color:#fff;}
+.result-label{font-size:.82rem;color:rgba(255,255,255,.8);margin-top:3px;}
+.lect-results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.lect-card{border-radius:12px;padding:13px;border:2px solid #c0d0f0;background:var(--azul-light);}
+.lect-card-title{font-size:.68rem;font-weight:800;color:var(--azul);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px;}
+.lect-card-score{font-size:1.5rem;font-weight:800;color:var(--azul);}
+.lect-card-pct{font-size:.75rem;color:var(--sub);margin-top:2px;}
+.result-bars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:16px;}
+.rbar-card{border-radius:11px;padding:11px 7px;text-align:center;color:#fff;}
+.rbar-val{font-size:1.2rem;font-weight:800;}.rbar-lbl{font-size:.67rem;opacity:.85;margin-top:2px;}
+.cne-block{background:#fff;border:2px solid #c0d0f0;border-radius:12px;padding:15px 17px;margin-bottom:14px;}
+.cne-title{font-size:.73rem;font-weight:800;color:var(--azul);letter-spacing:.4px;margin-bottom:9px;text-transform:uppercase;}
+.cne-score-row{display:flex;align-items:baseline;gap:8px;margin-bottom:3px;}
+.cne-score{font-size:2.4rem;font-weight:800;line-height:1;}
+.cne-max{font-size:.8rem;color:var(--sub);font-weight:600;}
+.cne-label{font-size:.8rem;font-weight:700;margin-bottom:11px;}
+.cne-scale-labels{display:flex;justify-content:space-between;font-size:.62rem;color:var(--sub);margin-bottom:3px;}
+.cne-track{height:10px;background:#e8eeff;border-radius:5px;overflow:hidden;}
+.cne-fill{height:100%;border-radius:5px;transition:width .9s ease;}
+.cne-ticks{display:flex;justify-content:space-between;margin-top:2px;}.cne-tick{font-size:.58rem;color:#aab4d4;}
+.cne-note{font-size:.67rem;color:var(--sub);margin-top:8px;line-height:1.5;border-top:1px solid #e8eeff;padding-top:6px;}
+.review-section h3{font-size:.86rem;margin-bottom:9px;font-weight:800;color:var(--azul);}
+.rev-lect-hdr{font-size:.78rem;font-weight:800;margin:12px 0 7px;padding:5px 11px;border-radius:7px;background:var(--azul-light);color:var(--azul);}
+.rev-item{border:1px solid #d8e4f8;border-radius:9px;padding:11px 13px;margin-bottom:7px;}
+.rev-header{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.rev-badge{font-size:.67rem;font-weight:700;padding:2px 7px;border-radius:20px;}
+.rev-badge.ok{background:#d5f5e3;color:#1e8449;}.rev-badge.fail{background:#fce4e4;color:#c0392b;}.rev-badge.skip{background:#f0f0f0;color:#888;}
+.rev-num{font-size:.68rem;color:#aaa;}.rev-q{font-size:.83rem;line-height:1.5;margin-bottom:4px;}
+.rev-ans{font-size:.77rem;color:var(--sub);}.rev-ans.ok-ans{color:#1e8449;font-weight:600;}
+.rev-exp{font-size:.77rem;color:var(--txt);margin-top:4px;border-top:1px solid #eef0f8;padding-top:4px;line-height:1.5;}
+.btn-retry{background:linear-gradient(135deg,var(--azul),var(--azul-dark));color:#fff;border:none;border-radius:12px;width:100%;padding:12px;font-size:.93rem;font-weight:800;cursor:pointer;margin-top:10px;}.btn-retry:hover{opacity:.88;}
+.modal-bg{position:fixed;inset:0;background:rgba(0,20,80,.5);display:none;align-items:center;justify-content:center;z-index:999;padding:16px;}
+.modal-bg.open{display:flex;}
+.modal{background:#fff;border-radius:14px;padding:22px 18px;max-width:330px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.2);}
+.modal h3{font-size:.97rem;margin-bottom:7px;color:var(--azul);font-weight:800;}
+.modal p{font-size:.83rem;color:var(--sub);margin-bottom:16px;line-height:1.6;}
+.modal-btns{display:flex;gap:8px;}.modal-btns button{flex:1;padding:10px;border-radius:9px;border:none;font-size:.86rem;font-weight:700;cursor:pointer;}
+.btn-cancel{background:#eef0f8;color:var(--txt);}.btn-confirm{background:linear-gradient(135deg,var(--naranja),var(--naranja-mid));color:#fff;}
+@media(max-width:560px){body{padding:0 0 20px;}.wrap{padding:0 8px;}.card{padding:16px 12px;}.exam-header,.exam-body,.exam-footer,.nav-section,.progress-wrap{padding-left:13px;padding-right:13px;}.nav-btn{width:27px;height:27px;font-size:.74rem;}.result-score{font-size:2rem;}.cne-score{font-size:1.9rem;}.lect-results{grid-template-columns:1fr;}.info-grid{grid-template-columns:1fr 1fr;}}
+
+.habilidades-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.hab-tag{background:var(--azul-light);border:1px solid #c0d0f0;border-radius:8px;
+  padding:9px 10px;font-size:.76rem;color:var(--azul);font-weight:600;
+  display:flex;align-items:center;gap:7px;}
+.q-text{white-space:pre-line;font-size:.93rem;line-height:1.8;margin-bottom:14px;font-weight:500;}
+.tip-box{background:#f0f7ff;border:1px solid #c0d8f0;border-radius:10px;
+  padding:11px 14px;margin-bottom:16px;font-size:.8rem;color:#2c5282;line-height:1.7;}
+</style>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-logo"><img src="logo.png" alt="Logo" style="width:60px;height:60px;object-fit:contain"></div>
+    <div>
+      <div class="hero-title">Asesorías Académicas <span>Izamal</span></div>
+      <div class="hero-subtitle">Simulacro EXANI-I · Pensamiento Matemático</div>
+      <span class="hero-badge">🔢</span>
+    </div>
+  </div>
+  <div class="hero-stripe"></div>
+</div>
+<div class="wrap">
+<div class="card" id="screen-home">
+  <h2>Simulacro 1 — Pensamiento Matemático A — Aritmética, Álgebra y Geometría</h2>
+  <p class="home-sub">Repaso EXANI-I · Ingreso a Educación Media Superior<br>Reactivos basados en guía oficial CENEVAL y simuladores reales.</p>
+  <div class="habilidades-grid"><div class="hab-tag"><span>🔢</span> Aritmética y fracciones (8)</div><div class="hab-tag"><span>📐</span> Álgebra y ecuaciones (7)</div><div class="hab-tag"><span>📊</span> Geometría y áreas (8)</div><div class="hab-tag"><span>📉</span> Estadística, probabilidad y proporciones (7)</div></div>
+  <div class="info-grid">
+    <div class="info-card"><div class="val">30</div><div class="lbl">Preguntas</div></div>
+    <div class="info-card"><div class="val">40 min</div><div class="lbl">Tiempo</div></div>
+    <div class="info-card"><div class="val">EXANI-I</div><div class="lbl">Nivel</div></div>
+  </div>
+  <div class="tip-box">💡 <strong>Tip EXANI-I:</strong> Lee cada reactivo con calma. Elimina opciones que sean claramente incorrectas. En matemáticas, verifica tu operación antes de seleccionar. En redacción, lee el texto completo antes de responder.</div>
+  <button class="btn-primary" onclick="startExam()">▶ Comenzar simulacro</button>
+</div>
+<div class="card" id="screen-exam" style="display:none;padding:0">
+  <div class="exam-header">
+    <div class="lectura-pill">🔢 Pensamiento Matemático</div>
+    <div class="timer-box" id="timer-box">40:00</div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+  <div class="nav-section">
+    <div class="nav-label">Azul: correcta · Naranja: incorrecta · Gris: pendiente</div>
+    <div class="nav-grid" id="nav-grid"></div>
+  </div>
+  <div class="exam-body">
+    <div class="q-num" id="q-num"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+    <div class="explanation" id="explanation"></div>
+  </div>
+  <div class="exam-footer">
+    <button class="btn-nav" id="btn-prev" onclick="goTo(STATE.qIdx-1)">← Anterior</button>
+    <button class="btn-nav" id="btn-next-nav" onclick="goTo(STATE.qIdx+1)">Siguiente →</button>
+    <button class="btn-entregar" id="btn-entregar" style="display:none" onclick="pedirConfirmar()">Entregar</button>
+  </div>
+</div>
+<div class="card" id="screen-timeout" style="display:none">
+  <h2 style="color:var(--naranja);text-align:center;margin-bottom:10px">⏰ Tiempo agotado</h2>
+  <p style="text-align:center;color:var(--sub);margin-bottom:20px">Se agotó el tiempo. Las preguntas sin responder cuentan como incorrectas.</p>
+  <button class="btn-retry" onclick="finishAndShow()">Ver resultados →</button>
+</div>
+<div class="card" id="screen-results" style="display:none">
+  <h2>📊 Resultados del simulacro</h2>
+  <div class="result-summary"><div class="result-score" id="res-score">—</div><div class="result-label">Reactivos correctos · 30 preguntas</div></div>
+  <div class="cne-block">
+    <div class="cne-title">📊 Puntaje Estimado CENEVAL</div>
+    <div class="cne-score-row"><span class="cne-score" id="cne-val">—</span><span class="cne-max">/ 1300</span></div>
+    <div class="cne-label" id="cne-lbl"></div>
+    <div class="cne-scale-labels"><span>700</span><span>800</span><span>900</span><span>1000</span><span>1100</span><span>1200</span><span>1300</span></div>
+    <div class="cne-track"><div class="cne-fill" id="cne-bar" style="width:0%"></div></div>
+    <div class="cne-ticks"><span class="cne-tick">▲Mín</span><span class="cne-tick" style="margin:0 auto">▲Media(1000)</span><span class="cne-tick">Máx▲</span></div>
+    <div class="cne-note" id="cne-note"></div>
+  </div>
+  <div class="result-bars">
+    <div class="rbar-card" style="background:#27ae60"><div class="rbar-val" id="res-ok">0</div><div class="rbar-lbl">Correctas</div></div>
+    <div class="rbar-card" style="background:var(--naranja)"><div class="rbar-val" id="res-fail">0</div><div class="rbar-lbl">Incorrectas</div></div>
+    <div class="rbar-card" style="background:#95a5a6"><div class="rbar-val" id="res-skip">0</div><div class="rbar-lbl">Sin responder</div></div>
+  </div>
+  <div class="review-section"><h3>Revisión detallada</h3><div id="review-list"></div></div>
+  <button class="btn-retry" onclick="retryExam()">🔄 Intentar de nuevo</button>
+</div>
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3>¿Entregar el simulacro?</h3><p id="modal-msg"></p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmarEntrega()">Entregar</button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+const BANCO = [
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el resultado de $(-3) \\times (-4) + 2^3 - 5$?",
+"a": "$15$",
+"b": "$19$",
+"c": "$11$",
+"correcta": "a",
+"exp": "$(-3)\\times(-4)=12$ (producto de dos negativos = positivo). $2^3 = 8$. $12 + 8 - 5 = 15$. La opción a) 15 es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Una tienda ofrece un descuento del 25% sobre el precio original de una chamarra que cuesta $480. ¿Cuánto pagará el comprador?",
+"a": "$120",
+"b": "$360",
+"c": "$350",
+"correcta": "b",
+"exp": "Descuento = 25% de $480 = 0.25 × 480 = $120. Precio final = $480 − $120 = **$360**. La opción b) es correcta. Alternativa: precio final = 75% de 480 = 0.75 × 480 = 360."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el valor de $x$ en la ecuación $3x - 7 = 14$?",
+"a": "$x = 3$",
+"b": "$x = 7$",
+"c": "$x = 5$",
+"correcta": "b",
+"exp": "$3x - 7 = 14 \\Rightarrow 3x = 14 + 7 = 21 \\Rightarrow x = 21 \\div 3 = 7$. Verificación: $3(7) - 7 = 21 - 7 = 14$ ✓. La opción b) $x=7$ es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "En una clase de 40 alumnos, el 60% son mujeres. ¿Cuántos hombres hay en el salón?",
+"a": "$24$",
+"b": "$16$",
+"c": "$20$",
+"correcta": "b",
+"exp": "Mujeres = 60% de 40 = 0.60 × 40 = 24. Hombres = 40 − 24 = **16**. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el área de un triángulo rectángulo cuyos catetos miden 6 cm y 8 cm?",
+"a": "$48 \\text{ cm}^2$",
+"b": "$24 \\text{ cm}^2$",
+"c": "$14 \\text{ cm}^2$",
+"correcta": "b",
+"exp": "Área del triángulo = $\\frac{base \\times altura}{2} = \\frac{6 \\times 8}{2} = \\frac{48}{2} = 24$ cm². Los catetos son la base y la altura de un triángulo rectángulo. La opción b) 24 cm² es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es la hipotenusa del triángulo rectángulo anterior con catetos de 6 cm y 8 cm?",
+"a": "$12$ cm",
+"b": "$10$ cm",
+"c": "$14$ cm",
+"correcta": "b",
+"exp": "Teorema de Pitágoras: $c^2 = a^2 + b^2 = 6^2 + 8^2 = 36 + 64 = 100$. $c = \\sqrt{100} = 10$ cm. El famoso triángulo 6-8-10 es múltiplo del 3-4-5. La opción b) 10 cm es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Luis tiene el doble de edad que Pedro. La suma de sus edades es 36 años. ¿Cuántos años tiene Pedro?",
+"a": "$18$ años",
+"b": "$12$ años",
+"c": "$24$ años",
+"correcta": "b",
+"exp": "Sea Pedro = $x$; Luis = $2x$. $x + 2x = 36 \\Rightarrow 3x = 36 \\Rightarrow x = 12$. Pedro tiene **12 años** y Luis 24. Verificación: 12 + 24 = 36 ✓. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el mínimo común múltiplo (mcm) de 4, 6 y 9?",
+"a": "$36$",
+"b": "$18$",
+"c": "$72$",
+"correcta": "a",
+"exp": "Factorización: 4 = $2^2$; 6 = $2 \\times 3$; 9 = $3^2$. mcm = $2^2 \\times 3^2 = 4 \\times 9 = 36$. Verificación: 36 ÷ 4 = 9 ✓; 36 ÷ 6 = 6 ✓; 36 ÷ 9 = 4 ✓. La opción a) 36 es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Si $f(x) = 2x^2 - 3x + 1$, ¿cuánto vale $f(2)$?",
+"a": "$3$",
+"b": "$2$",
+"c": "$5$",
+"correcta": "a",
+"exp": "$f(2) = 2(2)^2 - 3(2) + 1 = 2(4) - 6 + 1 = 8 - 6 + 1 = 3$. La opción a) 3 es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Una bicicleta recorre 180 km en 4 horas. ¿Cuál es su velocidad promedio?",
+"a": "$40$ km/h",
+"b": "$45$ km/h",
+"c": "$50$ km/h",
+"correcta": "b",
+"exp": "Velocidad = distancia ÷ tiempo = 180 km ÷ 4 h = **45 km/h**. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuántos términos tiene la progresión aritmética: 3, 7, 11, 15, ..., 51?",
+"a": "$12$",
+"b": "$13$",
+"c": "$14$",
+"correcta": "b",
+"exp": "Fórmula del término $n$: $a_n = a_1 + (n-1)d$. $51 = 3 + (n-1) \\times 4 \\Rightarrow 48 = (n-1) \\times 4 \\Rightarrow n-1 = 12 \\Rightarrow n = 13$. La sucesión tiene **13 términos**. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el valor de la expresión $\\frac{2}{3} + \\frac{3}{4} - \\frac{1}{6}$?",
+"a": "$\\frac{5}{4}$",
+"b": "$\\frac{3}{2}$",
+"c": "$\\frac{7}{6}$",
+"correcta": "a",
+"exp": "mcm(3,4,6) = 12. $\\frac{8}{12} + \\frac{9}{12} - \\frac{2}{12} = \\frac{15}{12} = \\frac{5}{4}$. La opción a) $\\frac{5}{4}$ es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Un rectángulo tiene un perímetro de 60 cm. Si su largo es el doble de su ancho, ¿cuánto mide el ancho?",
+"a": "$10$ cm",
+"b": "$15$ cm",
+"c": "$20$ cm",
+"correcta": "a",
+"exp": "Sea ancho = $a$; largo = $2a$. Perímetro = $2(a + 2a) = 2(3a) = 6a = 60 \\Rightarrow a = 10$ cm. Verificación: largo = 20, perímetro = 2(10+20) = 60 ✓. La opción a) 10 cm es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el resultado de $(x + 3)(x - 2)$?",
+"a": "$x^2 + x - 6$",
+"b": "$x^2 - x - 6$",
+"c": "$x^2 + x + 6$",
+"correcta": "a",
+"exp": "$(x+3)(x-2) = x^2 - 2x + 3x - 6 = x^2 + x - 6$. Se aplica la propiedad distributiva (FOIL): primeros × primeros, externas, internas, últimas. La opción a) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "En una encuesta de 200 personas, 80 prefieren café, 70 prefieren té y el resto prefiere agua. ¿Qué porcentaje prefiere agua?",
+"a": "$20\\%$",
+"b": "$25\\%$",
+"c": "$30\\%$",
+"correcta": "b",
+"exp": "Agua = 200 − 80 − 70 = 50 personas. Porcentaje = $(50/200) \\times 100 = 25\\%$. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el valor de $\\sqrt{144} + \\sqrt{25}$?",
+"a": "$13$",
+"b": "$17$",
+"c": "$19$",
+"correcta": "b",
+"exp": "$\\sqrt{144} = 12$ (porque $12^2 = 144$); $\\sqrt{25} = 5$ (porque $5^2 = 25$). $12 + 5 = 17$. La opción b) 17 es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Se lanzan dos dados. ¿Cuál es la probabilidad de obtener una suma de 7?",
+"a": "$\\frac{1}{6}$",
+"b": "$\\frac{7}{36}$",
+"c": "$\\frac{1}{7}$",
+"correcta": "a",
+"exp": "Pares que suman 7: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) → 6 casos favorables. Total de resultados posibles: $6 \\times 6 = 36$. $P = \\frac{6}{36} = \\frac{1}{6}$. La opción a) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Simplifica la fracción $\\frac{48}{72}$.",
+"a": "$\\frac{2}{3}$",
+"b": "$\\frac{3}{4}$",
+"c": "$\\frac{4}{6}$",
+"correcta": "a",
+"exp": "MCD(48, 72) = 24. $\\frac{48 \\div 24}{72 \\div 24} = \\frac{2}{3}$. Verificación: $2 \\times 72 = 144 = 3 \\times 48$ ✓. La opción a) $\\frac{2}{3}$ es la fracción en su mínima expresión."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es la pendiente de la recta que pasa por los puntos $(1, 2)$ y $(3, 8)$?",
+"a": "$m = 2$",
+"b": "$m = 3$",
+"c": "$m = 4$",
+"correcta": "b",
+"exp": "$m = \\frac{y_2 - y_1}{x_2 - x_1} = \\frac{8 - 2}{3 - 1} = \\frac{6}{2} = 3$. La pendiente es 3. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el volumen de un cubo con arista de 5 cm?",
+"a": "$75 \\text{ cm}^3$",
+"b": "$125 \\text{ cm}^3$",
+"c": "$150 \\text{ cm}^3$",
+"correcta": "b",
+"exp": "Volumen del cubo = $a^3 = 5^3 = 125$ cm³. La opción b) 125 cm³ es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Los datos 3, 5, 7, 9, 11 representan las calificaciones de un estudiante. ¿Cuál es su promedio (media aritmética)?",
+"a": "$6$",
+"b": "$7$",
+"c": "$8$",
+"correcta": "b",
+"exp": "Media = $\\frac{3+5+7+9+11}{5} = \\frac{35}{5} = 7$. La opción b) 7 es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el número que, multiplicado por 6 y restando 3, da como resultado 33?",
+"a": "$5$",
+"b": "$6$",
+"c": "$7$",
+"correcta": "b",
+"exp": "Sea el número $x$: $6x - 3 = 33 \\Rightarrow 6x = 36 \\Rightarrow x = 6$. Verificación: $6 \\times 6 - 3 = 36 - 3 = 33$ ✓. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuánto mide el ángulo interior de un hexágono regular?",
+"a": "$108°$",
+"b": "$120°$",
+"c": "$135°$",
+"correcta": "b",
+"exp": "Suma de ángulos interiores de un polígono de $n$ lados: $(n-2) \\times 180°$. Hexágono: $n=6$, suma = $(6-2) \\times 180° = 4 \\times 180° = 720°$. Cada ángulo interior = $720° \\div 6 = 120°$. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "En una tienda hay 3 tipos de bebida y 4 tipos de sándwich. ¿De cuántas formas se puede elegir una bebida y un sándwich?",
+"a": "$7$",
+"b": "$12$",
+"c": "$16$",
+"correcta": "b",
+"exp": "Principio de multiplicación: $3 \\times 4 = 12$ formas diferentes de elegir una bebida y un sándwich. La opción b) 12 es correcta. Reactivo tipo exani.com.mx simulador EXANI."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el resultado de $\\frac{2}{5} \\times \\frac{15}{8}$?",
+"a": "$\\frac{3}{4}$",
+"b": "$\\frac{4}{5}$",
+"c": "$\\frac{5}{6}$",
+"correcta": "a",
+"exp": "$\\frac{2}{5} \\times \\frac{15}{8} = \\frac{2 \\times 15}{5 \\times 8} = \\frac{30}{40} = \\frac{3}{4}$. Simplificando: se puede cruzar cancelar $\\frac{2}{8}=\\frac{1}{4}$ y $\\frac{15}{5}=3$, por lo que el resultado es $\\frac{3}{4}$. La opción a) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "La mediana de los datos 4, 7, 2, 9, 5, 1, 8 es:",
+"a": "$4$",
+"b": "$5$",
+"c": "$7$",
+"correcta": "b",
+"exp": "Ordenados: 1, 2, 4, **5**, 7, 8, 9. Con 7 datos, la mediana es el 4° valor = 5. La opción b) 5 es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuál es el área de un círculo con radio de 7 cm? (Usa $\\pi \\approx 3.14$)",
+"a": "$43.96 \\text{ cm}^2$",
+"b": "$153.86 \\text{ cm}^2$",
+"c": "$21.98 \\text{ cm}^2$",
+"correcta": "b",
+"exp": "Área = $\\pi r^2 = 3.14 \\times 7^2 = 3.14 \\times 49 = 153.86$ cm². La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Si $2x + y = 10$ y $x - y = 2$, ¿cuál es el valor de $x$?",
+"a": "$x = 3$",
+"b": "$x = 4$",
+"c": "$x = 5$",
+"correcta": "b",
+"exp": "Sumando las ecuaciones: $(2x+y) + (x-y) = 10+2 \\Rightarrow 3x = 12 \\Rightarrow x = 4$. Verificación: $y = x-2 = 2$; $2(4)+2 = 10$ ✓. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "¿Cuánto es el 15% de 240?",
+"a": "$30$",
+"b": "$36$",
+"c": "$40$",
+"correcta": "b",
+"exp": "$15\\% \\text{ de } 240 = 0.15 \\times 240 = 36$. Alternativa: $10\\%$ de 240 = 24; $5\\%$ de 240 = 12; $24+12 = 36$. La opción b) es correcta."
+},
+{
+"tipo": "regular",
+"enunciado": "Un auto viaja a 90 km/h. ¿Cuánto tiempo tardará en recorrer 270 km?",
+"a": "$2$ horas",
+"b": "$3$ horas",
+"c": "$4$ horas",
+"correcta": "b",
+"exp": "Tiempo = distancia ÷ velocidad = $270 \\div 90 = 3$ horas. La opción b) es correcta."
+}
+];
+const TIEMPO_MIN = 40;
+const STATE = {qIdx:0,answers:{},timerSec:0,timerID:null};
+const $=id=>document.getElementById(id);
+const show=id=>$(id).style.display='block';
+const hide=id=>$(id).style.display='none';
+function fmtT(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function calcCNE(c,t){if(!t)return 1000;const z=((c/t)*100-50)/16.67;return Math.min(1300,Math.max(700,Math.round(1000+100*z)));}
+function cneColor(c){return c>=1050?'#1e8449':c>=950?'#d4ac0d':'#cc3300';}
+function cneLabel(c){return c>=1100?'Muy por encima de la media':c>=1050?'Por encima de la media':c>=950?'Cerca de la media':c>=900?'Por debajo de la media':'Muy por debajo de la media';}
+function shuffleReactivo(r){
+  if(r._opts)return;
+  const tc=r[r.correcta];
+  let opts=[{l:'a',t:r.a},{l:'b',t:r.b},{l:'c',t:r.c}];
+  if(r.tipo!=='asoc'&&r.tipo!=='comp'){
+    for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]];}
+  }
+  r._opts=opts; r._answerKey=opts.find(o=>o.t===tc).l;
+}
+function startExam(){
+  STATE.qIdx=0;STATE.answers={};
+  BANCO.forEach(r=>{delete r._opts;delete r._answerKey;shuffleReactivo(r);});
+  hide('screen-home');buildNavGrid();show('screen-exam');startTimer();renderQ();
+}
+function retryExam(){hide('screen-results');startExam();}
+function startTimer(){
+  STATE.timerSec=TIEMPO_MIN*60;renderTimer();
+  STATE.timerID=setInterval(()=>{STATE.timerSec--;renderTimer();
+    if(STATE.timerSec<=0){clearInterval(STATE.timerID);timeOut();}},1000);
+}
+function renderTimer(){
+  const tb=$('timer-box');tb.textContent=fmtT(STATE.timerSec);
+  tb.className='timer-box'+(STATE.timerSec<=60?' danger':STATE.timerSec<=180?' warn':'');
+}
+function timeOut(){hide('screen-exam');show('screen-timeout');}
+function finishAndShow(){hide('screen-timeout');showResults();}
+function buildNavGrid(){
+  const g=$('nav-grid');g.innerHTML='';
+  BANCO.forEach((r,i)=>{
+    const b=document.createElement('button');
+    b.className='nav-btn';b.id='nb-'+i;b.textContent=i+1;b.title=r.tipo;
+    b.onclick=(()=>{const x=i;return()=>goTo(x);})();
+    g.appendChild(b);
+  });
+  updateNav();
+}
+function updateNav(){
+  BANCO.forEach((r,i)=>{
+    const b=$('nb-'+i);if(!b)return;
+    let cls='nav-btn';
+    if(STATE.answers.hasOwnProperty(i))cls+=STATE.answers[i]===r._answerKey?' answered':' wrong-nav';
+    if(i===STATE.qIdx)cls+=' current';
+    b.className=cls;
+  });
+  $('progress-bar').style.width=(Object.keys(STATE.answers).length/BANCO.length*100)+'%';
+}
+function goTo(i){if(i<0||i>=BANCO.length)return;STATE.qIdx=i;renderQ();}
+function renderQ(){
+  const r=BANCO[STATE.qIdx],n=BANCO.length,i=STATE.qIdx;
+  $('q-num').textContent='Pregunta '+(i+1)+' de '+n;
+  $('q-text').textContent=r.enunciado;
+  $('btn-prev').disabled=i===0;
+  $('btn-next-nav').disabled=i===n-1;
+  $('btn-entregar').style.display=i===n-1?'block':'none';
+  const con=$('options');con.innerHTML='';
+  const saved=STATE.answers.hasOwnProperty(i)?STATE.answers[i]:null;
+  const answered=saved!==null,cl=r._answerKey;
+  r._opts.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';btn.dataset.key=o.l;
+    const sm=r.tipo==='asoc'||r.tipo==='comp';
+    btn.innerHTML='<span class="opt-letter">'+o.l.toUpperCase()+'</span><span style="'+(sm?'font-size:.83rem;line-height:1.6;':'')+'">'+o.t+'</span>';
+    if(answered){
+      btn.disabled=true;
+      if(saved===cl){if(o.l===cl)btn.classList.add('correct');}
+      else{if(o.l===saved)btn.classList.add('wrong');if(o.l===cl)btn.classList.add('correct');}
+    }else{btn.onclick=()=>selectOpt(o.l,btn);}
+    con.appendChild(btn);
+  });
+  const ex=$('explanation');
+  if(answered){
+    const ok=saved===cl;
+    ex.innerHTML=(ok?'✅ ':'❌ ')+(r.exp||'Respuesta correcta: '+cl.toUpperCase());
+    ex.className='explanation show'+(ok?'':' fail');
+  }else{ex.className='explanation';ex.innerHTML='';}
+  updateNav();
+}
+function selectOpt(key,cb){
+  const r=BANCO[STATE.qIdx];STATE.answers[STATE.qIdx]=key;
+  const cl=r._answerKey,ok=key===cl;
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.key===cl)b.classList.add('correct');
+    if(b===cb&&!ok)b.classList.add('wrong');
+  });
+  const ex=$('explanation');
+  ex.innerHTML=(ok?'✅ ':'❌ ')+(r.exp||'Respuesta correcta: '+cl.toUpperCase());
+  ex.className='explanation show'+(ok?'':' fail');
+  updateNav();
+}
+function pedirConfirmar(){
+  const p=BANCO.length-Object.keys(STATE.answers).length;
+  $('modal-msg').innerHTML=p>0?'Tienes <strong>'+p+'</strong> pregunta(s) sin responder. ¿Entregar?':'¿Entregar el simulacro?';
+  $('modal-bg').classList.add('open');
+}
+function cerrarModal(){$('modal-bg').classList.remove('open');}
+function confirmarEntrega(){cerrarModal();clearInterval(STATE.timerID);hide('screen-exam');showResults();}
+function showResults(){
+  let c=0,w=0,sk=0;
+  const porTipo={};
+  BANCO.forEach((r,i)=>{
+    const t=r.tipo||'regular';
+    if(!porTipo[t])porTipo[t]={c:0,t2:0,nom:t};
+    porTipo[t].t2++;
+    if(!STATE.answers.hasOwnProperty(i))sk++;
+    else if(STATE.answers[i]===r._answerKey){c++;porTipo[t].c++;}
+    else w++;
+  });
+  const tot=BANCO.length,pct=Math.round(c/tot*100),cne=calcCNE(c,tot),col=cneColor(cne);
+  $('res-score').textContent=c+'/'+tot+' ('+pct+'%)';
+  $('res-ok').textContent=c;$('res-fail').textContent=w;$('res-skip').textContent=sk;
+  $('cne-val').textContent=cne;$('cne-val').style.color=col;
+  $('cne-lbl').textContent=cneLabel(cne);$('cne-lbl').style.color=col;
+  $('cne-bar').style.width=((cne-700)/600*100)+'%';$('cne-bar').style.background=col;
+  $('cne-note').textContent='Estimado con '+c+' aciertos de '+tot+' ('+pct+'%). Z=(X-50)/16.67, ICNE=1000+100Z.';
+  const rv=$('review-list');rv.innerHTML='';
+  BANCO.forEach((r,i)=>{
+    const g=STATE.answers[i],cl=r._answerKey;
+    const om={};r._opts.forEach(o=>om[o.l]=o.t);
+    let st='skip',bd='Sin responder';
+    if(g){st=g===cl?'ok':'fail';bd=g===cl?'Correcta':'Incorrecta';}
+    rv.innerHTML+='<div class="rev-item"><div class="rev-header">'
+      +'<span class="rev-badge '+st+'">'+bd+'</span>'
+      +'<span class="rev-num">P.'+(i+1)+'</span></div>'
+      +'<div class="rev-q" style="white-space:pre-line;">'+r.enunciado+'</div>'
+      +(g?'<div class="rev-ans">Tu resp: '+g.toUpperCase()+') '+(om[g]||'')+'</div>':'')
+      +(g!==cl?'<div class="rev-ans ok-ans">✓ Correcta: '+cl.toUpperCase()+') '+(om[cl]||'')+'</div>':'')
+      +(r.exp?'<div class="rev-exp">💡 '+r.exp+'</div>':'')
+      +'</div>';
+  });
+  show('screen-results');
+}
+
+</script>
+</body>
+</html>
